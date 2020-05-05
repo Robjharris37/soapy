@@ -74,7 +74,7 @@ class ShackHartmann(base.WFS):
             self.SUBAP_OVERSIZE = 1
         else:
             self.SUBAP_OVERSIZE = 2
-        
+
         self.nx_detector_pixels = self.nx_subaps * (self.nx_subap_pixels + self.nx_guard_pixels) + self.nx_guard_pixels
 
         self.nx_subap_interp *= self.SUBAP_OVERSIZE
@@ -455,28 +455,6 @@ class ShackHartmann(base.WFS):
                     0, pxlEquivNoise, 2*self.n_subaps)
 
         return self.slopes
-
-
-    def addPhotonNoise(self):
-        """
-        Add photon noise to ``wfsDetectorPlane`` using ``numpy.random.poisson``
-        """
-        self.detector[:] = numpy.random.poisson(self.detector).astype(DTYPE)
-
-
-    def addReadNoise(self):
-        """
-        Adds read noise to ``wfsDetectorPlane using ``numpy.random.normal``.
-        This generates a normal (guassian) distribution of random numbers to
-        add to the detector. Any CCD bias is assumed to have been removed, so
-        the distribution is centred around 0. The width of the distribution
-        is determined by the value `eReadNoise` set in the WFS configuration.
-        """
-        self.detector += numpy.random.normal(
-                0, self.config.eReadNoise, self.wfsDetectorPlane.shape
-                )
-
-
 
 def findActiveSubaps(
             nx_subaps, mask, threshold, nx_subap_pixels, subap_oversize, guard=0):
